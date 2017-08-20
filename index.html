@@ -1,0 +1,44 @@
+<head>
+<script>
+var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+recognition.lang = 'en-US';
+recognition.interimResults = false;
+recognition.maxAlternatives = 5;
+
+function startRecognition(){
+  recognition.start();
+}
+
+function stopRecognition(){
+  recognition.stop();
+}
+
+
+recognition.onresult = function(event) {
+    var speechToText = event.results[0][0].transcript;
+    document.getElementById("actor-text").innerHTML = speechToText;
+    url = "https://wt-8e13792dc7d00e532953941c02125689-0.run.webtask.io/actor-lookup"
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    var data = {
+      "text": speechToText
+    };
+    xhr.send(JSON.stringify(data));
+
+    xhr.onloadend = function () {
+      // done
+      var url_begging = "https://image.tmdb.org/t/p/w500";
+      var json = JSON.parse(xhr.responseText);
+      var image_url = url_begging + json['image']
+      document.getElementById("actor-image").src = image_url;
+    };
+};
+</script>
+</head>
+<body>
+<img id="actor-image" />
+<h1 id="actor-text"> Click recognize text to say an actors name to search for </h1>
+<input type="button" onclick="startRecognition();" value="Recognize text" />
+  <input type="button" onclick="stopRecognition();" value="stop recognition and search name" />
+</body>

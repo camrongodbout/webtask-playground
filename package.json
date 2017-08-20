@@ -1,0 +1,15 @@
+{
+  "name": "score-checker",
+  "version": "1.0.0",
+  "description": "Simple app that uses google API voice and serverless webtask to get nfl scores",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Camron Godbout",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.4"
+  }
+}
